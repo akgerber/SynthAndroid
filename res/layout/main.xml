@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+	<TextView
+		android_id="@+id/scale_label"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="@string/scale_label" />
+	<Spinner 
+		android_id="@+id/scale_spinner" 
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:prompt="@string/scale_label" />
+	<Button 
+		android_id="@+id/send_button" 
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:prompt="@string/send_button" />	
+</LinearLayout>
