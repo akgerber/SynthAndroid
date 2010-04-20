@@ -12,5 +12,6 @@
     	<item>F</item>
     	<item>G</item>
     </string-array>
+    <string name="bt_error">Bluetooth failed to initialize. Does your phone have it?</string>
 
 </resources>
