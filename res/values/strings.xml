@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Sythesthesia</string>
-    <string name="scale_label">Sythesthesia</string>
     <string name="send_button">Send</string>
     <string-array name="scale_options">
-    	<item>A</item>
-    	<item>B</item>
     	<item>C</item>
+    	<item>C♯/D♭</item>    	
     	<item>D</item>
+    	<item>D♯/E♭</item>
     	<item>E</item>
     	<item>F</item>
+    	<item>F♯/G♭</item>
     	<item>G</item>
+    	<item>G♯/A♭</item>
+    	<item>A</item>
+    	<item>A♯/B♭</item>    	
+    	<item>B</item>
     </string-array>
     <string name="bt_error">Bluetooth failed to initialize. Does your phone have it?</string>
+    <string name="dynamic">Dynamic Range</string>
+    <string name="major">Major</string>
+    <string name="minor">Minor</string>
 
 </resources>

@@ -5,6 +5,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -54,6 +56,15 @@ public class SynthHome extends Activity {
         
     }
     
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	return true;
+    }
     
     private Button.OnClickListener mSendButtonListener = new Button.OnClickListener(){
 	    public void onClick(View v) {
