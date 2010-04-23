@@ -18,7 +18,6 @@
     	<item>B</item>
     </string-array>
     <string name="bt_error">Bluetooth failed to initialize. Does your phone have it?</string>
-    <string name="dynamic">Dynamic Range</string>
     <string name="major">Major</string>
     <string name="minor">Minor</string>
     <string name="connected">Status: connected</string>

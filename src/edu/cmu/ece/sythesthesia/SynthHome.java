@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,8 @@ public class SynthHome extends Activity {
     private TextView status;
 	private Button sendButton;
 	private Spinner scaleSpinner;
+	private RadioButton major;
+	private RadioButton minor;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,22 +55,25 @@ public class SynthHome extends Activity {
         setContentView(R.layout.main);
         
         //Initialize UI elements
-        scaleSpinner = (Spinner) findViewById(R.id.scale_spinner);
-        if (scaleSpinner != null) {
+        try {
+        	//Spinner
+	        scaleSpinner = (Spinner) findViewById(R.id.scale_spinner);
 	        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 	        		this, R.array.scale_options, android.R.layout.simple_spinner_item);
 	        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	        scaleSpinner.setAdapter(adapter);
-        } else {
-        	//TODO: error handling
+	        //Button
+	        sendButton = (Button) findViewById(R.id.send_button);
+	    	sendButton.setOnClickListener(mSendButtonListener);
+	    	//Status text
+	        status = (TextView) findViewById(R.id.conn_status);
+	        //Radio Buttons
+	        major = (RadioButton) findViewById(R.id.RBMajor);
+	        minor = (RadioButton) findViewById(R.id.RBMinor);
+        } catch (NullPointerException E) {
+        	//TODO null view error handling
+        	//tell the user everything is sad and there ain't much to do 'bout it
         }
-        sendButton = (Button) findViewById(R.id.send_button);
-        if (sendButton != null) {
-        	sendButton.setOnClickListener(mSendButtonListener);
-        } else {
-        	//TODO error handling
-        }
-        status = (TextView) findViewById(R.id.conn_status);
         
         //Initialize Bluetooth adapter
     	bta = BluetoothAdapter.getDefaultAdapter();
@@ -131,6 +137,10 @@ public class SynthHome extends Activity {
     
     private void quit() {
     	System.exit(0);
+    }
+    
+    private Byte getStateToSend() {
+    	return (byte)0xff;
     }
     
     private Button.OnClickListener mSendButtonListener = new Button.OnClickListener(){
