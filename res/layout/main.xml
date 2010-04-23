@@ -3,14 +3,13 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-	<TextView
-		android_id="@+id/scale_label"
-	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content" 
-	    android:text="@string/scale_label" />
 	<ImageView android:id="@+id/title_image"
 		android:src="@drawable/synth" 
 		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" />
+	<TextView android:id="@+id/conn_status"
+		android:text="@string/disconnected" 
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" />
 	<Spinner android:id="@+id/scale_spinner" 
 		android:layout_width="fill_parent"

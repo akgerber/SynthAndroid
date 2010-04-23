@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!--  MAIN SCREEN -->
     <string name="app_name">Sythesthesia</string>
     <string name="send_button">Send</string>
     <string-array name="scale_options">
@@ -20,5 +21,20 @@
     <string name="dynamic">Dynamic Range</string>
     <string name="major">Major</string>
     <string name="minor">Minor</string>
+    <string name="connected">Status: connected</string>
+    <string name="disconnected">Status: disconnected</string>
+    
+    <!--  DeviceListActivity -->
+    <string name="scanning">scanning for devices...</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="none_found">No devices found</string>
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_other_devices">Other Available Devices</string>
+    <string name="button_scan">Scan for devices</string>
+
+    <!-- Options Menu -->
+    <string name="connect">Connect a device</string>
+    <string name="quit">Quit</string>
 
 </resources>
