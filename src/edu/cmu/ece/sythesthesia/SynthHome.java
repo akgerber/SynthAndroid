@@ -74,7 +74,10 @@ public class SynthHome extends Activity {
 	        status.setText(R.string.disconnected);
 	        //Radio Buttons
 	        major = (RadioButton) findViewById(R.id.RBMajor);
+	        major.toggle();
 	        minor = (RadioButton) findViewById(R.id.RBMinor);
+	        major.setOnClickListener(mRadioListener);
+	        minor.setOnClickListener(mRadioListener);
         } catch (NullPointerException e) {
         	e.printStackTrace();
         	//TODO null view error handling
@@ -91,10 +94,13 @@ public class SynthHome extends Activity {
     
     protected void onDestroy() {
         try {
-            bts.close();
-        } catch (IOException e) {
+        	if (bts != null) {
+        		bts.close();
+        	}
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        super.onDestroy();
     };
     
     @Override
@@ -160,23 +166,39 @@ public class SynthHome extends Activity {
 	    	} else {
 	    		packet = 0;
 	    	}
-	    	packet += new Integer(spinnerNote).byteValue();
-	    	Log.v(TAG, "writing this to BT:" + packet);
+	    	packet += new Integer(spinnerNote).byteValue() ;
+	    	Log.v(TAG, "writing this to BT: " + packet);
 	    	try {
 	    		os.write(packet);
+	    		os.flush();
 	    		byte buf[] = new byte[10];
                 is.read(buf);
-	    	} catch (Exception e) {
+	    		Toast.makeText(SynthHome.this, new String(buf), Toast.LENGTH_LONG).show();
 	    		
+	    	} catch (Exception e) {
+	    		Toast.makeText(SynthHome.this, "Failed to send!", Toast.LENGTH_LONG).show();
+	    		e.printStackTrace();
 	    	}
 	    	
 	    }
     };
     
+    private Button.OnClickListener mRadioListener = new Button.OnClickListener(){
+	    public void onClick(View v) {
+	    	switch (v.getId()) {
+	    	case R.id.RBMajor:
+	    		isMajor = true;
+	    	case R.id.RBMinor:
+	    		isMajor = false;
+	    	default:
+	    		Log.d(TAG, "radio button borked" + v.toString());
+	    	}
+	    }
+    };    
     private class mOnItemSelectedListener implements OnItemSelectedListener {
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-			spinnerNote = pos;
+			spinnerNote = pos + 1;
 		}
 		
 		@Override
