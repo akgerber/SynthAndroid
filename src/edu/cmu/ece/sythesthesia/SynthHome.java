@@ -1,5 +1,6 @@
 package edu.cmu.ece.sythesthesia;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -37,9 +38,7 @@ public class SynthHome extends Activity {
     private BluetoothDevice remotebt;
     private BluetoothSocket bts;
     private OutputStream os;
-    private OutputStreamWriter osw;
     private InputStream is;
-    private InputStreamReader isr;
     private UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //magic
     
     //UI Components
@@ -48,6 +47,10 @@ public class SynthHome extends Activity {
 	private Spinner scaleSpinner;
 	private RadioButton major;
 	private RadioButton minor;
+	
+	//global state
+	private int spinnerNote = 0;
+	private Boolean isMajor = true;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,15 +65,18 @@ public class SynthHome extends Activity {
 	        		this, R.array.scale_options, android.R.layout.simple_spinner_item);
 	        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	        scaleSpinner.setAdapter(adapter);
+	        scaleSpinner.setOnItemSelectedListener(new mOnItemSelectedListener());
 	        //Button
 	        sendButton = (Button) findViewById(R.id.send_button);
 	    	sendButton.setOnClickListener(mSendButtonListener);
 	    	//Status text
 	        status = (TextView) findViewById(R.id.conn_status);
+	        status.setText(R.string.disconnected);
 	        //Radio Buttons
 	        major = (RadioButton) findViewById(R.id.RBMajor);
 	        minor = (RadioButton) findViewById(R.id.RBMinor);
-        } catch (NullPointerException E) {
+        } catch (NullPointerException e) {
+        	e.printStackTrace();
         	//TODO null view error handling
         	//tell the user everything is sad and there ain't much to do 'bout it
         }
@@ -80,10 +86,16 @@ public class SynthHome extends Activity {
 		if (bta == null) {
         	Toast.makeText(this, R.string.bt_error, 3);
 		}
-
-
         
     }
+    
+    protected void onDestroy() {
+        try {
+            bts.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    };
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,7 +112,7 @@ public class SynthHome extends Activity {
     		startActivityForResult(getDevIntent, REQUEST_CONNECT_DEVICE);
     		break;
     	case R.id.quit:
-    		quit();
+    		System.exit(0);
     		break;
     	}
     	return false;
@@ -123,11 +135,13 @@ public class SynthHome extends Activity {
 	                os = bts.getOutputStream();
 	                is = bts.getInputStream();
 	                bts.connect();
+	                //Change status 
+	            	status.setText(R.string.connected);
             	} catch (Exception e) {
-        			Toast.makeText(this, R.string.bt_error, 5);            		
+        			Toast.makeText(this, getString(R.string.bt_error) +" "+ e.toString(), Toast.LENGTH_LONG).show();
+        			e.printStackTrace();
             	}
             	//Set status to success
-            	status.setText(R.string.connected);
             //Activity failed
     		} else {
     			Toast.makeText(this, R.string.bt_error, 5);
@@ -135,27 +149,34 @@ public class SynthHome extends Activity {
     	}
     }
     
-    private void quit() {
-    	System.exit(0);
-    }
-    
-    private Byte getStateToSend() {
-    	return (byte)0xff;
-    }
+
     
     private Button.OnClickListener mSendButtonListener = new Button.OnClickListener(){
 	    public void onClick(View v) {
-	    	Log.v(TAG, "BodyTrackHome starting ZXing for barcode scan");	    	
-	    	Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-	    	intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
-	    	startActivityForResult(intent,0);
+	    	//java I love how you don't have unsigned
+	    	byte packet;
+	    	if (isMajor) {
+	    		packet = Byte.MIN_VALUE;
+	    	} else {
+	    		packet = 0;
+	    	}
+	    	packet += new Integer(spinnerNote).byteValue();
+	    	Log.v(TAG, "writing this to BT:" + packet);
+	    	try {
+	    		os.write(packet);
+	    		byte buf[] = new byte[10];
+                is.read(buf);
+	    	} catch (Exception e) {
+	    		
+	    	}
+	    	
 	    }
     };
     
     private class mOnItemSelectedListener implements OnItemSelectedListener {
 		@Override
-		public void onItemSelected(AdapterView parent, View view, int pos, long id) {
-			//Do nothing
+		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+			spinnerNote = pos;
 		}
 		
 		@Override
