@@ -2,9 +2,7 @@ package edu.cmu.ece.sythesthesia;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.UUID;
 
 import android.app.Activity;
@@ -173,8 +171,10 @@ public class SynthHome extends Activity {
 	    		os.flush();
 	    		byte buf[] = new byte[10];
                 is.read(buf);
-	    		Toast.makeText(SynthHome.this, new String(buf), Toast.LENGTH_LONG).show();
-	    		
+                Log.e("Look", new String(buf));
+                if (buf[0] != '1')
+                    throw new Exception();
+	    		Toast.makeText(SynthHome.this, "Sent", Toast.LENGTH_LONG).show();
 	    	} catch (Exception e) {
 	    		Toast.makeText(SynthHome.this, "Failed to send!", Toast.LENGTH_LONG).show();
 	    		e.printStackTrace();
@@ -188,20 +188,20 @@ public class SynthHome extends Activity {
 	    	switch (v.getId()) {
 	    	case R.id.RBMajor:
 	    		isMajor = true;
+	    		break;
 	    	case R.id.RBMinor:
 	    		isMajor = false;
+	    		break;
 	    	default:
 	    		Log.d(TAG, "radio button borked" + v.toString());
 	    	}
 	    }
     };    
     private class mOnItemSelectedListener implements OnItemSelectedListener {
-		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 			spinnerNote = pos + 1;
 		}
 		
-		@Override
 		public void onNothingSelected(AdapterView parent) {
 			//Do nothing
 		}
