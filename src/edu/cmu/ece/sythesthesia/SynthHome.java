@@ -171,7 +171,7 @@ public class SynthHome extends Activity {
 	    		os.flush();
 	    		byte buf[] = new byte[10];
                 is.read(buf);
-                Log.e("Look", new String(buf));
+                Log.v("Look", new String(buf));
                 if (buf[0] != '1')
                     throw new Exception();
 	    		Toast.makeText(SynthHome.this, "Sent", Toast.LENGTH_LONG).show();
