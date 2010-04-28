@@ -67,6 +67,7 @@ public class SynthHome extends Activity {
 	        //Button
 	        sendButton = (Button) findViewById(R.id.send_button);
 	    	sendButton.setOnClickListener(mSendButtonListener);
+	    	sendButton.setEnabled(false);
 	    	//Status text
 	        status = (TextView) findViewById(R.id.conn_status);
 	        status.setText(R.string.disconnected);
@@ -141,6 +142,8 @@ public class SynthHome extends Activity {
 	                bts.connect();
 	                //Change status 
 	            	status.setText(R.string.connected);
+	            	//Enable send button
+	            	sendButton.setEnabled(true);
             	} catch (Exception e) {
         			Toast.makeText(this, getString(R.string.bt_error) +" "+ e.toString(), Toast.LENGTH_LONG).show();
         			e.printStackTrace();
